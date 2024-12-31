@@ -1,0 +1,156 @@
+
+1. Abstraction
+ * Vehicle (Abstract Class)
+public abstract class Vehicle {
+    private String vehicleId;
+    private String model;
+    private double baseRentalRate;
+    private boolean isAvailable; 
+
+    // Constructor
+    public Vehicle(String vehicleId, String model, double baseRentalRate) {
+        this.vehicleId = vehicleId;
+        this.model = model;
+        this.baseRentalRate = baseRentalRate;
+        this.isAvailable = true; 
+    }
+
+    // Getters and Setters
+    public String getVehicleId() { 
+        return vehicleId; 
+    }
+    public String getModel() { 
+        return model; 
+    }
+    public double getBaseRentalRate() { 
+        return baseRentalRate; 
+    }
+    public boolean isAvailable() { 
+        return isAvailable; 
+    }
+    public void setAvailable(boolean available) { 
+        this.isAvailable = available; 
+    }
+
+    // Abstract methods
+    public abstract double calculateRentalCost(int days); 
+    public abstract boolean isAvailableForRental(); 
+}
+
+2. Inheritance
+ * Car
+public class Car extends Vehicle {
+    private int passengerCapacity;
+
+    public Car(String vehicleId, String model, double baseRentalRate, int passengerCapacity) {
+        super(vehicleId, model, baseRentalRate);
+        this.passengerCapacity = passengerCapacity;
+    }
+
+    @Override
+    public double calculateRentalCost(int days) {
+        return super.getBaseRentalRate() * days; // Simple calculation, can be more complex
+    }
+
+    @Override
+    public boolean isAvailableForRental() {
+        return super.isAvailable();
+    }
+
+    // ... Getters and Setters for passengerCapacity ... 
+}
+
+ * Motorcycle
+public class Motorcycle extends Vehicle {
+    private boolean hasSidecar;
+
+    public Motorcycle(String vehicleId, String model, double baseRentalRate, boolean hasSidecar) {
+        super(vehicleId, model, baseRentalRate);
+        this.hasSidecar = hasSidecar;
+    }
+
+    @Override
+    public double calculateRentalCost(int days) {
+        double cost = super.getBaseRentalRate() * days;
+        if (hasSidecar) {
+            cost += 20 * days; // Extra cost for sidecar
+        }
+        return cost;
+    }
+
+    @Override
+    public boolean isAvailableForRental() {
+        return super.isAvailable();
+    }
+
+    // ... Getters and Setters for hasSidecar ... 
+}
+
+ * Truck
+public class Truck extends Vehicle {
+    private double weightCapacity;
+
+    public Truck(String vehicleId, String model, double baseRentalRate, double weightCapacity) {
+        super(vehicleId, model, baseRentalRate);
+        this.weightCapacity = weightCapacity;
+    }
+
+    @Override
+    public double calculateRentalCost(int days) {
+        return super.getBaseRentalRate() * days; // Can include weight-based pricing
+    }
+
+    @Override
+    public boolean isAvailableForRental() {
+        return super.isAvailable();
+    }
+
+    // ... Getters and Setters for weightCapacity ... 
+}
+
+3. Encapsulation
+ * All critical data within each class (e.g., vehicleId, model, baseRentalRate, availability) are private.
+ * Access to these fields is controlled through public getter and setter methods.
+ * Setters can include input validation to ensure data integrity.
+4. Polymorphism
+ * The calculateRentalCost() method is overridden in each subclass (Car, Motorcycle, Truck) to provide specific calculations for each vehicle type.
+ * This demonstrates polymorphism as the same method behaves differently in different subclasses.
+5. Composition
+ * Customer
+public class Customer {
+    private String name;
+    private String contactInfo;
+    // ... other relevant customer details ...
+
+    // Constructor, Getters, and Setters
+}
+
+ * RentalAgency
+public class RentalAgency {
+    private List<Vehicle> vehicles; 
+    private List<RentalTransaction> transactions; 
+
+    // Methods:
+    public void addVehicle(Vehicle vehicle) { 
+        vehicles.add(vehicle); 
+    }
+    public void rentVehicle(Customer customer, Vehicle vehicle, int days) { 
+        // ... logic to rent a vehicle, update availability, create transaction ... 
+    }
+    public void returnVehicle(Vehicle vehicle) { 
+        // ... logic to return a vehicle, update availability ... 
+    }
+    // ... other agency-related methods ... 
+}
+
+ * RentalTransaction
+public class RentalTransaction {
+    private Customer customer;
+    private Vehicle vehicle;
+    private int rentalDays;
+    private double totalCost; 
+    private Date startDate;
+    private Date endDate;
+
+    // Constructor, Getters, and Setters
+}
